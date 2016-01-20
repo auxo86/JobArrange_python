@@ -1,0 +1,2 @@
+strMemberArraySelect = arrayMemberPartial
+pointNextWho = 明旭
