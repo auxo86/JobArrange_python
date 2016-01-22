@@ -25,7 +25,13 @@
     <Content Include="班表.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassInJobArrange.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="job_arrange.py" />
+    <Compile Include="sqlite連接.py" />
     <Compile Include="test.py" />
+    <Compile Include="test_shuffle.py" />
     <Compile Include="排班程式雛形.py" />
     <Compile Include="排班程式雛形_shell_ver.py" />
   </ItemGroup>
