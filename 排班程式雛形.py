@@ -3,11 +3,34 @@ import sqlite3
 import datetime
 from ClassInJobArrange import JobObj
 
+""" 下面是用來取得一天有幾個班的函數 """
+def CountJobQuantityInOneDay():
+    conn = sqlite3.connect('job_arrange.db')
+    c = conn.cursor()
+    c.execute('select count(job_name) from job where enable = 1')
+    intJobQuantity = c.fetchall()[0][0]
+    return intJobQuantity
+
+def ShowAndReturnMemberTable():
+    conn = sqlite3.connect('job_arrange.db')
+    c = conn.cursor()
+    c.execute('select * from ForArrange')
+    listMemberForArrange = c.fetchall()
+    i = 0
+    for tupleMember in listMemberForArrange:
+        print(tupleMember, end = '\t')
+        if i % 5 == 4:
+            print()
+        i += 1
+    print()
+    return listMemberForArrange
+
 def main():
-    intJobQuantity = int(input('請問一天有幾種班：'))
+    intJobQuantity = CountJobQuantityInOneDay()
     dateStartDate = datetime.datetime.strptime(input('請輸入排班起始日期(西元年-月-日)：'),'%Y-%m-%d')  
     intDays = int(input('請輸入天數：'))
-    intStartMemberId = int(input('請輸入排班起始人員的Order ID'))
+    listMemberForArrange = ShowAndReturnMemberTable()
+    intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
     listJobObjsInOneDay = [JobObj() for i in range(0, intJobQuantity, 1)]
     listDaysArray = [listJobObjsInOneDay[:] for i in range(0, intDays,1)]
     print(listDaysArray)
