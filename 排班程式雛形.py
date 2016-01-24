@@ -14,10 +14,11 @@ def ShowAndReturnMemberTable(c):
     listMemberForArrange = c.fetchall()
     i = 0
     for tupleMember in listMemberForArrange:
-        print(tupleMember, end = ' ')
-        if i % 5 == 4:
+        print(tupleMember, end = '\t')
+        if i % 4 == 3:
             print()
         i += 1
+    print()
     return listMemberForArrange
 
 def main():
