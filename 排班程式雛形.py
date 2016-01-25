@@ -13,7 +13,11 @@ def main():
     listMemberForArrange = ShowAndReturnMemberTable(c)
     intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
     listJobObjsInOneDay = [JobObj() for i in range(0, intJobQuantity, 1)]
-    listDaysArray = [listJobObjsInOneDay[:] for i in range(0, intDays,1)]
+    listDaysArray = [listJobObjsInOneDay for i in range(0, intDays,1)]
+    for JobsInOneDay in listDaysArray:
+        for Job in JobsInOneDay:
+            Job.JobDate = dateStartDate
+        dateStartDate = dateStartDate + datetime.timedelta(days = 1)
     print(listDaysArray)
 
     conn.close()
