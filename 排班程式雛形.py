@@ -2,7 +2,7 @@
 import sqlite3
 import datetime
 from ClassInJobArrange import JobObj
-from SourceReader import CountJobQuantityInOneDay, ShowAndReturnMemberTable
+from SourceReader import CountJobQuantityInOneDay, ShowAndReturnMemberTable, ReturnJobsList
 from copy import deepcopy
 
 def main():
@@ -11,13 +11,17 @@ def main():
     intJobQuantity = CountJobQuantityInOneDay(c)
     dateStartDate = datetime.datetime.strptime(input('請輸入排班起始日期(西元年-月-日)：'),'%Y-%m-%d')  
     intDays = int(input('請輸入天數：'))
+    listJobsInOneDay = ReturnJobsList(c)
     listMemberForArrange = ShowAndReturnMemberTable(c)
     intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
     listJobObjsInOneDay = [JobObj() for i in range(0, intJobQuantity, 1)]
     listDaysArray = [deepcopy(listJobObjsInOneDay) for i in range(0, intDays,1)]
     for JobsInOneDay in listDaysArray:
+        i = 0
         for Job in JobsInOneDay:
             Job.JobDate = dateStartDate
+            Job.JobName = listJobsInOneDay[i][2]
+            i += 1
         dateStartDate = dateStartDate + datetime.timedelta(days = 1)
     print(listDaysArray)
 
