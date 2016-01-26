@@ -5,6 +5,11 @@ def CountJobQuantityInOneDay(c):
     intJobQuantity = c.fetchall()[0][0]
     return intJobQuantity
 
+def ReturnJobsList(c):
+    c.execute('select * from job where enable = 1 order by job_order')
+    listJobsInOneDay = c.fetchall()
+    return listJobsInOneDay
+
 def ShowAndReturnMemberTable(c):
     c.execute('select * from ForArrange')
     listMemberForArrange = c.fetchall()
