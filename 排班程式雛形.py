@@ -29,9 +29,12 @@ def main():
                 #填入人員
                 if listJobsInOneDay[iJobIndex][(dateStartDate.isoweekday() + 5)] == 1:
                     Job.JobOwner = listMemberForArrange[intStartMemberId - 1][1]
+                    #排了人就往下一位加一，沒有排就不用
                     intStartMemberId += 1
                 else:
+                    #如果當天沒有這個工作，人名不填
                     Job.JobOwner = ""
+                #如果要排的ID到了大於人員陣列的情況，就從頭開始排
                 if intStartMemberId > len(listMemberForArrange):
                     intStartMemberId = 1
                 iJobIndex += 1
