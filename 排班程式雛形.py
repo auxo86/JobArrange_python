@@ -11,19 +11,39 @@ def main():
     intJobQuantity = CountJobQuantityInOneDay(c)
     dateStartDate = datetime.datetime.strptime(input('請輸入排班起始日期(西元年-月-日)：'),'%Y-%m-%d')  
     intDays = int(input('請輸入天數：'))
+    #回傳資料庫中的班別表格
     listJobsInOneDay = ReturnJobsList(c)
     listMemberForArrange = ShowAndReturnMemberTable(c)
     intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
+    #製造一天中要填班的陣列
     listJobObjsInOneDay = [JobObj() for i in range(0, intJobQuantity, 1)]
     listDaysArray = [deepcopy(listJobObjsInOneDay) for i in range(0, intDays,1)]
     for JobsInOneDay in listDaysArray:
-        i = 0
-        for Job in JobsInOneDay:
-            Job.JobDate = dateStartDate
-            Job.JobName = listJobsInOneDay[i][2]
-            i += 1
+        if dateStartDate.isoweekday() < 6:
+            iJobIndex = 0
+            for Job in JobsInOneDay:
+                #填入日期
+                Job.JobDate = dateStartDate
+                #填入工作點字串
+                Job.JobName = listJobsInOneDay[iJobIndex][2]
+                #填入人員
+                if listJobsInOneDay[iJobIndex][(dateStartDate.isoweekday() + 5)] == 1:
+                    Job.JobOwner = listMemberForArrange[intStartMemberId - 1][1]
+                    intStartMemberId += 1
+                else:
+                    Job.JobOwner = ""
+                if intStartMemberId > len(listMemberForArrange):
+                    intStartMemberId = 1
+                iJobIndex += 1
+        else:
+            for Job in JobsInOneDay:
+                Job.JobDate = dateStartDate
+                Job.JobName = ""
+                Job.JobOwner = ""
         dateStartDate = dateStartDate + datetime.timedelta(days = 1)
-    print(listDaysArray)
+
+        for Job in JobsInOneDay:
+            print(str(Job.JobDate.date()) + ':' + Job.JobName + ":" + Job.JobOwner + "\n")
 
     conn.close()
 
