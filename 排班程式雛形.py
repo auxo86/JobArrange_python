@@ -37,7 +37,7 @@ def main():
                 #如果要排的ID到了大於人員陣列的情況，就從頭開始排
                 if intStartMemberId > len(listMemberForArrange):
                     intStartMemberId = 1
-                iJobIndex += 1
+                iJobIndex += 1 #推往下一個班
         else:
             for Job in JobsInOneDay:
                 Job.JobDate = dateStartDate
