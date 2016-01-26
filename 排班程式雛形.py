@@ -12,7 +12,7 @@ def main():
     dateStartDate = datetime.datetime.strptime(input('請輸入排班起始日期(西元年-月-日)：'),'%Y-%m-%d')  
     intDays = int(input('請輸入天數：'))
     #回傳資料庫中的班別表格
-    listJobsInOneDay = ReturnJobsList(c)
+    listJobsTable = ReturnJobsList(c)
     listMemberForArrange = ShowAndReturnMemberTable(c)
     intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
     #製造一天中要填班的陣列
@@ -25,9 +25,9 @@ def main():
                 #填入日期
                 Job.JobDate = dateStartDate
                 #填入工作點字串
-                Job.JobName = listJobsInOneDay[iJobIndex][2]
+                Job.JobName = listJobsTable[iJobIndex][2]
                 #填入人員
-                if listJobsInOneDay[iJobIndex][(dateStartDate.isoweekday() + 5)] == 1:
+                if listJobsTable[iJobIndex][(dateStartDate.isoweekday() + 5)] == 1:
                     Job.JobOwner = listMemberForArrange[intStartMemberId - 1][1]
                     #排了人就往下一位加一，沒有排就不用
                     intStartMemberId += 1
