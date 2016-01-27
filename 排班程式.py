@@ -1,4 +1,15 @@
 # -*- coding: utf8 -*-
+
+#使用本程式請注意設定以下條件：
+#1.誰下大夜
+#2.誰上大夜
+#3.是否有新人進入排班
+#4.是否有新人去ipd或是兒科training
+#5.是否有人離職
+#6.是否有人出臨床
+#7.是否有人入臨床
+#8.是否有人外派
+
 import sqlite3
 import datetime
 from ClassInJobArrange import JobObj
