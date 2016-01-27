@@ -2,7 +2,7 @@
 import sqlite3
 import datetime
 from ClassInJobArrange import JobObj
-from SourceReader import CountJobQuantityInOneDay, ShowAndReturnMemberTable, ReturnJobsList
+from SourceReader import CountJobQuantityInOneDay, ShowAndReturnMemberTable, ReturnJobsList, ReturnRegularMemberName
 from copy import deepcopy
 
 def main():
@@ -26,11 +26,14 @@ def main():
                 Job.JobDate = dateStartDate
                 #填入工作點字串
                 Job.JobName = listJobsTable[iJobIndex][2]
-                #填入人員
-                if listJobsTable[iJobIndex][(dateStartDate.isoweekday() + 5)] == 1:
-                    Job.JobOwner = listMemberForArrange[intStartMemberId - 1][1]
-                    #排了人就往下一位加一，沒有排就不用
-                    intStartMemberId += 1
+                #填入人員。不過要先判斷是否有包班。
+                if listJobsTable[iJobIndex][(dateStartDate.isoweekday() + 5)] == 1: #如果這天有這個班
+                    if listJobsTable[iJobIndex][4] == 1: #看看是否有包班
+                        Job.JobOwner = ReturnRegularMemberName(c, listJobsTable[iJobIndex][5]) #取得包班人員名字
+                    else:
+                        Job.JobOwner = listMemberForArrange[intStartMemberId - 1][1] #從待排人員陣列中抓一個來排
+                        #排了人就往下一位加一，沒有排就不用
+                        intStartMemberId += 1
                 else:
                     #如果當天沒有這個工作，人名不填
                     Job.JobOwner = ""
