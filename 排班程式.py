@@ -26,6 +26,7 @@ def main():
     listJobsTable = ReturnJobsList(c)
     listMemberForArrange = ShowAndReturnMemberTable(c)
     intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
+    dictWeekDay = {1:"一", 2:"二", 3:"三", 4:"四", 5:"五", 6:"六", 7:"日"}
     #製造一天中要填班的陣列
     listJobObjsInOneDay = [JobObj() for i in range(0, intJobQuantity, 1)]
     listDaysArray = [deepcopy(listJobObjsInOneDay) for i in range(0, intDays,1)]
