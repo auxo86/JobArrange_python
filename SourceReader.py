@@ -21,3 +21,8 @@ def ShowAndReturnMemberTable(c):
         i += 1
     print()
     return listMemberForArrange
+
+def ReturnRegularMemberName(c, intMemberId):
+    c.execute('select name from member_array where ID = ' + str(intMemberId))
+    strMemberName = c.fetchall()[0][0]
+    return strMemberName
