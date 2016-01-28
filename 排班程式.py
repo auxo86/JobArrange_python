@@ -4,17 +4,20 @@
 #1.誰下大夜
 #2.誰上大夜
 #3.是否有新人進入排班
-#4.是否有新人去ipd或是兒科training
+#4.是否有新人去ipd或是兒科training第一周
 #5.是否有人離職
 #6.是否有人出臨床
 #7.是否有人入臨床
 #8.是否有人外派
+#9.是否有人新包班
+#10.是否有人不包了
 
 import sqlite3
 import datetime
 from ClassInJobArrange import JobObj
 from SourceReader import CountJobQuantityInOneDay, ShowAndReturnMemberTable, ReturnJobsList, ReturnRegularMemberName
 from copy import deepcopy
+from OutputModule import PrintJobTable
 
 def main():
     conn = sqlite3.connect('job_arrange.db')
@@ -26,7 +29,6 @@ def main():
     listJobsTable = ReturnJobsList(c)
     listMemberForArrange = ShowAndReturnMemberTable(c)
     intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
-    dictWeekDay = {1:"一", 2:"二", 3:"三", 4:"四", 5:"五", 6:"六", 7:"日"}
     #製造一天中要填班的陣列
     listJobObjsInOneDay = [JobObj() for i in range(0, intJobQuantity, 1)]
     listDaysArray = [deepcopy(listJobObjsInOneDay) for i in range(0, intDays,1)]
@@ -62,6 +64,8 @@ def main():
 
         for Job in JobsInOneDay:
             print(str(Job.JobDate.date()) + ':' + Job.JobName + ":" + Job.JobOwner + "\n")
+
+    PrintJobTable(listDaysArray, listJobsTable)
 
     conn.close()
 
