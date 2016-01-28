@@ -1,4 +1,15 @@
 # -*- coding: utf8 -*-
+
+#使用本程式請注意設定以下條件：
+#1.誰下大夜
+#2.誰上大夜
+#3.是否有新人進入排班
+#4.是否有新人去ipd或是兒科training
+#5.是否有人離職
+#6.是否有人出臨床
+#7.是否有人入臨床
+#8.是否有人外派
+
 import sqlite3
 import datetime
 from ClassInJobArrange import JobObj
@@ -15,6 +26,7 @@ def main():
     listJobsTable = ReturnJobsList(c)
     listMemberForArrange = ShowAndReturnMemberTable(c)
     intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
+    dictWeekDay = {1:"一", 2:"二", 3:"三", 4:"四", 5:"五", 6:"六", 7:"日"}
     #製造一天中要填班的陣列
     listJobObjsInOneDay = [JobObj() for i in range(0, intJobQuantity, 1)]
     listDaysArray = [deepcopy(listJobObjsInOneDay) for i in range(0, intDays,1)]

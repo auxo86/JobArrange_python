@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{475bf44e-9435-4c06-9077-77bab6146ea7}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>job_arrange.py</StartupFile>
+    <StartupFile>排班程式.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -21,18 +21,15 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="fileMemberSetting.txt" />
+    <Content Include="job_arrange.db" />
     <Content Include="班表.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassInJobArrange.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="job_arrange.py" />
-    <Compile Include="sqlite連接.py" />
-    <Compile Include="test.py" />
-    <Compile Include="test_shuffle.py" />
-    <Compile Include="排班程式雛形.py" />
+    <Compile Include="SourceReader.py" />
+    <Compile Include="排班程式.py" />
     <Compile Include="排班程式雛形_shell_ver.py" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
