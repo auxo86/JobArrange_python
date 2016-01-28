@@ -22,7 +22,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="fileMemberSetting.txt" />
-    <Content Include="job_arrange.db" />
     <Content Include="班表.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -30,7 +29,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="job_arrange.py" />
-    <Compile Include="SourceReader.py" />
     <Compile Include="sqlite連接.py" />
     <Compile Include="test.py" />
     <Compile Include="test_shuffle.py" />
