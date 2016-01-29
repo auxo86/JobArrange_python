@@ -28,6 +28,7 @@
     <Compile Include="ClassInJobArrange.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="OutputModule.py" />
     <Compile Include="SourceReader.py" />
     <Compile Include="排班程式.py" />
     <Compile Include="排班程式雛形_shell_ver.py" />
