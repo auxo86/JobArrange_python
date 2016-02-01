@@ -29,10 +29,14 @@ def main():
     listJobsTable = ReturnJobsList(c)
     listMemberForArrange = ShowAndReturnMemberTable(c)
     intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
+    #todo: 產生排班計畫。例如是否於某日加減人員，或是某日加減班。然後依據日期一天天形成班別或是人員條件改變list。然後依據日期去檢查是否有改變的班或是人員，先檢查班，確定有多少班後檢查人員。
     #製造一天中要填班的陣列
     listJobObjsInOneDay = [JobObj() for i in range(0, intJobQuantity, 1)]
     listDaysArray = [deepcopy(listJobObjsInOneDay) for i in range(0, intDays,1)]
+    #進入排班流程
     for JobsInOneDay in listDaysArray:
+    #todo: 先挑出日期，判斷是否有班別數量更動。
+    #todo: 然後判斷是否有人員更動。原則是要先確定班別在確定人員。
         if dateStartDate.isoweekday() < 6:
             iJobIndex = 0
             for Job in JobsInOneDay:
@@ -62,10 +66,10 @@ def main():
                 Job.JobOwner = ""
         dateStartDate = dateStartDate + datetime.timedelta(days = 1)
 
-        for Job in JobsInOneDay:
-            print(str(Job.JobDate.date()) + ':' + Job.JobName + ":" + Job.JobOwner + "\n")
+        #for Job in JobsInOneDay:
+        #    print(str(Job.JobDate.date()) + ':' + Job.JobName + ":" + Job.JobOwner + "\n")
 
-    PrintJobTable(listDaysArray, listJobsTable)
+    PrintJobTable(listDaysArray, listJobsTable) #todo: 要產生EXCEL或是任何可以產生粗體的文件格式
 
     conn.close()
 
