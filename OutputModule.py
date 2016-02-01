@@ -1,5 +1,9 @@
 # -*- coding: utf8 -*-
 def PrintJobTable(listDaysArray, listJobsTable):
+    #列印頁首
+    print(str(listDaysArray[0][0].JobDate.date()) + '~' + str(listDaysArray[len(listDaysArray)-1][0].JobDate.date()) + '的班表')
+    print()
+    #列印內容
     print(',,', end = '')
     for JobItem in listJobsTable:
         print(JobItem[2] +',', end = '')
