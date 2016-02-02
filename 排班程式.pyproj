@@ -22,7 +22,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="job_arrange.db" />
-    <Content Include="test.html" />
     <Content Include="Todo list.txt" />
     <Content Include="班表.jpg" />
   </ItemGroup>
