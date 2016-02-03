@@ -24,6 +24,7 @@
     <Content Include="job_arrange.db" />
     <Content Include="Todo list.txt" />
     <Content Include="班表.jpg" />
+    <Content Include="預先寫好的sql指令.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassInJobArrange.py">
