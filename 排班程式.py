@@ -15,19 +15,25 @@
 import sqlite3
 import datetime
 from ClassInJobArrange import JobObj
-from SourceReader import CountJobQuantityInOneDay, ShowAndReturnMemberTable, ReturnJobsList, ReturnRegularMemberName
+from SourceReader import CountJobQuantityInOneDay, ReturnJobsList, ReturnRegularMemberName, ReturnMemberChange, RecordNamesAndPattern, GetBackStarterID, GetBackStarterID, ShowForArrangeMemberTable
 from copy import deepcopy
 from OutputModule import PrintJobTable
+from DatabaseOperation import DisableMember, UpdateForArrange
 
 def main():
     conn = sqlite3.connect('job_arrange.db')
     c = conn.cursor()
+    #動態更動班後要重新算過
     intJobQuantity = CountJobQuantityInOneDay(c)
     dateStartDate = datetime.datetime.strptime(input('請輸入排班起始日期(西元年-月-日)：'),'%Y-%m-%d')  
     intDays = int(input('請輸入天數：'))
     #回傳資料庫中的班別表格
+    #動態更動班後要重新算過
     listJobsTable = ReturnJobsList(c)
-    listMemberForArrange = ShowAndReturnMemberTable(c)
+    listMemberForArrange = UpdateForArrange(conn)
+    ShowForArrangeMemberTable(listMemberForArrange)
+    #把動態更動排班人員的需求載入
+    listMemberChange = ReturnMemberChange(conn)
     intStartMemberId = int(input('請輸入排班起始人員的Order ID：'))
     #todo: 產生排班計畫。例如是否於某日加減人員，或是某日加減班。然後依據日期一天天形成班別或是人員條件改變list。然後依據日期去檢查是否有改變的班或是人員，先檢查班，確定有多少班後檢查人員。
     #製造一天中要填班的陣列
@@ -35,8 +41,36 @@ def main():
     listDaysArray = [deepcopy(listJobObjsInOneDay) for i in range(0, intDays,1)]
     #進入排班流程
     for JobsInOneDay in listDaysArray:
-    #todo: 先挑出日期，判斷是否有班別數量更動。
-    #todo: 然後判斷是否有人員更動。原則是要先確定班別在確定人員。
+        #確定排到誰了,紀錄現在排到的人名，還有下一位即將排到的人名，以便在陣列重組後可以找到從哪開始排
+        listNowAndNextMemberNamesAndPattern = RecordNamesAndPattern(listMemberForArrange, intStartMemberId)
+        #todo: 先挑出日期，判斷是否有班別數量更動。
+        #todo: 然後判斷是否有人員更動。原則是要先確定班別再確定人員。
+        #使用當天日期來判斷是否有在listMemberChange中，如果有，就抓給listMemberChangeToday
+        listMemberChangeToday = list(filter(lambda listMC: listMC[0] == str(dateStartDate.date()), listMemberChange))
+        if len(listMemberChangeToday) > 0: 
+            '''
+            判斷人員更動的旗標組合結果如下：
+            4:加人
+            2:抽人
+            1:折扣
+            3:先設定有折扣，但是目前人先抽走
+            5:加人並設定其折扣
+            6:加人但目前不列入排班
+            7:加人並設定好折扣但目前不列入排班
+            '''
+            funcMC = {
+                        4: print,
+                        2: DisableMember,
+                        1: print,
+                        3: print,
+                        5: print,
+                        6: print,
+                        7: print
+                     }
+            for MC in listMemberChangeToday: #MC[0]是日期, MC[1]是ID, MC[2]改變動作的旗標, MC[3]保留給"插入Member"的ArrangeOrder
+                listMemberForArrange = funcMC[MC[2]](MC, conn)
+            #從記錄下的人名找出下一個要排的人，並且設定好intStartMemberId
+            intStartMemberId = GetBackStarterID(listNowAndNextMemberNamesAndPattern,listMemberForArrange)
         if dateStartDate.isoweekday() < 6:
             iJobIndex = 0
             for Job in JobsInOneDay:
@@ -69,7 +103,7 @@ def main():
         #for Job in JobsInOneDay:
         #    print(str(Job.JobDate.date()) + ':' + Job.JobName + ":" + Job.JobOwner + "\n")
 
-    PrintJobTable(listDaysArray, listJobsTable) #todo: 要產生EXCEL或是任何可以產生粗體的文件格式
+    PrintJobTable(listDaysArray, listJobsTable) #產生EXCEL或是任何可以產生粗體的文件格式
 
     conn.close()
 

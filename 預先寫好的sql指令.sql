@@ -32,3 +32,6 @@ create table MemberWithoutByPassAndWithoutDiscount as select name from member_ar
 delete from ForArrange;
 vacuum;
 insert into ForArrange (name) select name from (select * from MemberWithoutByPass union all select * from MemberWithoutByPassAndWithoutDiscount);
+---------------------------------------------------------------------
+產生MemberChange表
+CREATE TABLE if not exists MemberChange (date DATETIME NOT NULL, MemberId INTEGER NOT NULL, flagChange INTEGER NOT NULL, ArrangeOrder INTEGER);
