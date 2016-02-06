@@ -44,15 +44,23 @@ def RecordNamesAndPattern(listMemberForArrange, intStartMemberId):
             listPattern.append(1)
         else:
             listPattern.append(0)
-    listNowAndNextMemberNamesAndPattern = [[listMemberForArrange[intStartMemberId - 1][1], listMemberForArrange[intStartMemberId][1]], listPattern]
-    #listNowAndNextMemberNamesAndPattern裡面大概是這樣 [['明旭','慧枚'], [1,0]]
+    listNowAndNextMemberNamesAndPattern = [[],]
+    for i in range(0,10,1):
+        listNowAndNextMemberNamesAndPattern[0].append(listMemberForArrange[intStartMemberId - 1][1])
+        intStartMemberId += 1
+        if intStartMemberId > len(listMemberForArrange):
+            intStartMemberId = 1
+    listNowAndNextMemberNamesAndPattern.append(listPattern)
+    #listNowAndNextMemberNamesAndPattern裡面大概是這樣 [['明旭','慧枚',....], [1,0]]
     return listNowAndNextMemberNamesAndPattern
 
 def GetBackStarterID(listNowAndNextMemberNamesAndPattern, listMemberForArrange):
-    listIdsAndNames = list(filter(lambda Names: Names[1] == listNowAndNextMemberNamesAndPattern[0][0], listMemberForArrange))
-    #如果第一個名字沒有了，找第二個，如果第二個也沒有了....那....
-    if len(listIdsAndNames) == 0:
-        listIdsAndNames = list(filter(lambda Names: Names[1] == listNowAndNextMemberNamesAndPattern[0][1], listMemberForArrange))
+    listIdsAndNames = []
+    i = 0
+    #保留十個人名，萬一一個個被抽走，還可以有十個機會。如果超過十個就會出現錯誤
+    while len(listIdsAndNames) == 0:
+        listIdsAndNames = list(filter(lambda Names: Names[1] == listNowAndNextMemberNamesAndPattern[0][i], listMemberForArrange))
+        i += 1
     #zip後應該是像這樣(1, (145, '詠馨'))
     listZipped = zip(listNowAndNextMemberNamesAndPattern[1], listIdsAndNames)
     intStartMemberId = 0
