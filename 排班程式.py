@@ -18,7 +18,7 @@ from ClassInJobArrange import JobObj
 from SourceReader import CountJobQuantityInOneDay, ReturnJobsList, ReturnRegularMemberName, ReturnMemberChange, RecordNamesAndPattern, GetBackStarterID, GetBackStarterID, ShowForArrangeMemberTable
 from copy import deepcopy
 from OutputModule import PrintJobTable
-from DatabaseOperation import DisableMember, UpdateForArrange
+from DatabaseOperation import DoMemberDiscount, InsertMember, DisableMember, UpdateForArrange, DisableMemberDiscount
 
 def main():
     conn = sqlite3.connect('job_arrange.db')
@@ -57,17 +57,20 @@ def main():
             5:加人並設定其折扣
             6:加人但目前不列入排班
             7:加人並設定好折扣但目前不列入排班
+            8:取消折扣
             '''
             funcMC = {
-                        4: print,
+                        4: InsertMember,
                         2: DisableMember,
-                        1: print,
-                        3: print,
-                        5: print,
-                        6: print,
-                        7: print
+                        1: DoMemberDiscount,
+                        #3: print,
+                        #5: print,
+                        #6: print,
+                        #7: print
+                        8: DisableMemberDiscount
                      }
-            for MC in listMemberChangeToday: #MC[0]是日期, MC[1]是ID, MC[2]改變動作的旗標, MC[3]保留給"插入Member"的ArrangeOrder
+            #MC = ('日期', ID, 執行的動作代碼, ArrangeOrder, name, by_pass, discount)
+            for MC in listMemberChangeToday:
                 listMemberForArrange = funcMC[MC[2]](MC, conn)
             #從記錄下的人名找出下一個要排的人，並且設定好intStartMemberId
             intStartMemberId = GetBackStarterID(listNowAndNextMemberNamesAndPattern,listMemberForArrange)
