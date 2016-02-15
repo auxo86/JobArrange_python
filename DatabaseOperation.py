@@ -46,10 +46,10 @@ def InsertMember(MC, conn):
         conn.execute('DROP TABLE sqlitestudio_temp_table;')
         conn.commit()
         #把某人之後的arrange_order都加1
-        c.execute('update member_array set arrange_order = arrange_order + 1 where arrange_order > ' + str(MC[3]))
+        c.execute('update member_array set arrange_order = arrange_order + 1 where arrange_order > ' + str(MC[3]) + ';')
         c.fetchall()
         #todo 然後插入這個人 (ID, arrange_order, name, by_pass, discount), 而且MC = ('日期', ID, 執行的動作代碼, ArrangeOrder, name, by_pass, discount)
-        conn.execute('insert into member_array values (null, ' + str(MC[3]) + ', \'' + str(MC[4]) + '\', ' + str(MC[5]) + ', ' + str(MC[6]) + ')')
+        conn.execute('insert into member_array values (null, ' + str(MC[3]) + ', \'' + str(MC[4]) + '\', ' + str(MC[5]) + ', ' + str(MC[6]) + ');')
         conn.commit()
         #恢復arrange_order的unique
         conn.execute('ALTER TABLE member_array RENAME TO sqlitestudio_temp_table;')
