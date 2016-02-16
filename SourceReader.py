@@ -30,7 +30,8 @@ def ReturnMemberChange(conn):
     c.execute('select * from MemberChange')
     listMemberChange = c.fetchall()
     #抓完要改變的人員清單後把表格清掉
-    conn.execute('drop table if exists MemberChange')
+    conn.execute('delete from MemberChange')
+    c.execute('vacuum;')
     conn.commit()
     return listMemberChange
 
