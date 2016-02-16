@@ -27,15 +27,13 @@ def CheckIDorName(MC):
     else:
         return ['name', MC[4]]
 
-#todo :不知道為什麼這函式不能用
 def InsertMember(MC, conn):
-    #todo: 先檢查member_array中是不是有這個人，如果沒有就加人。如果有但是by_pass等於1，就設定為0。MC = ('日期', ID, 執行的動作代碼, ArrangeOrder, name, by_pass, discount)
+    #先檢查member_array中是不是有這個人，如果沒有就加人。如果有但是by_pass等於1，就設定為0。MC = ('日期', ID, 執行的動作代碼, ArrangeOrder, name, by_pass, discount)
     c = conn.cursor()
     IDorName = CheckIDorName(MC)
     c.execute('select * from member_array where ' + str(IDorName[0]) + ' = \'' + str(IDorName[1]) + '\';')
     Member = c.fetchall()
     if len(Member) == 0:
-        #todo 先從他的下一個人之後的arrange_order通通加1
         #取消arrange_order的unique
         conn.execute('ALTER TABLE member_array RENAME TO sqlitestudio_temp_table;')
         conn.commit()
@@ -46,9 +44,8 @@ def InsertMember(MC, conn):
         conn.execute('DROP TABLE sqlitestudio_temp_table;')
         conn.commit()
         #把某人之後的arrange_order都加1
-        c.execute('update member_array set arrange_order = arrange_order + 1 where arrange_order > ' + str(MC[3]) + ';')
-        c.fetchall()
-        #todo 然後插入這個人 (ID, arrange_order, name, by_pass, discount), 而且MC = ('日期', ID, 執行的動作代碼, ArrangeOrder, name, by_pass, discount)
+        c.execute('update member_array set arrange_order = arrange_order + 1 where arrange_order > ' + str(MC[3]-1) + ';')
+        #然後插入這個人 (ID, arrange_order, name, by_pass, discount), 而且MC = ('日期', ID, 執行的動作代碼, ArrangeOrder, name, by_pass, discount)
         conn.execute('insert into member_array values (null, ' + str(MC[3]) + ', \'' + str(MC[4]) + '\', ' + str(MC[5]) + ', ' + str(MC[6]) + ');')
         conn.commit()
         #恢復arrange_order的unique
@@ -66,11 +63,21 @@ def InsertMember(MC, conn):
     return UpdateForArrange(conn)
 
 def DoMemberDiscount(MC, conn):
-    #todo: 檢查member_array的discount是不是等於1， 如果不是，就設定為1
+    #檢查member_array的discount是不是等於1， 如果不是，就設定為1。MC = ('日期', ID, 執行的動作代碼, ArrangeOrder, name, by_pass, discount)
+    c = conn.cursor()
+    c.execute('select * from member_array where ID = ?', (MC[1],))
+    Member = c.fetchone()
+    if Member[4] == 0:
+        c.execute('update member_array set discount = 1 where ID = ?', (MC[1],))
     return UpdateForArrange(conn)
 
 def DisableMemberDiscount(MC, conn):
     #todo: 檢查member_array的discount是不是等於1，如果是，則設定為0
+    c = conn.cursor()
+    c.execute('select * from member_array where ID = ?', (MC[1],))
+    Member = c.fetchone()
+    if Member[4] == 1:
+        c.execute('update member_array set discount = 0 where ID = ?', (MC[1],))
     return UpdateForArrange(conn)
 
 
