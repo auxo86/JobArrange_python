@@ -11,6 +11,7 @@
 #8.是否有人外派
 #9.是否有人新包班
 #10.是否有人不包了
+#11.本月是否有休假日
 
 import sqlite3
 import datetime
@@ -31,6 +32,7 @@ def main():
     #動態更動班後要重新算過
     listJobsTable = ReturnJobsList(c)
     listMemberForArrange = UpdateForArrange(conn)
+    listHolidays = ReturnHolidays(c)
     ShowForArrangeMemberTable(listMemberForArrange)
     #把動態更動排班人員的需求載入
     listMemberChange = ReturnMemberChange(conn)
