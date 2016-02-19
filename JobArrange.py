@@ -19,7 +19,7 @@ from ClassInJobArrange import JobObj
 from SourceReader import CountJobQuantityInOneDay, ReturnJobsList, ReturnRegularMemberName, ReturnMemberChange, RecordNamesAndPattern, GetBackStarterID, GetBackStarterID, ShowForArrangeMemberTable, ReturnHolidays
 from copy import deepcopy
 from OutputModule import PrintJobTable
-from DatabaseOperation import DoMemberDiscount, InsertMember, DisableMember, UpdateForArrange, DisableMemberDiscount
+from DatabaseOperation import DoMemberDiscount, InsertMember, DisableMember, UpdateForArrange, DisableMemberDiscount, SaveToDB
 
 def main():
     conn = sqlite3.connect('job_arrange.db')
@@ -109,6 +109,7 @@ def main():
         #    print(str(Job.JobDate.date()) + ':' + Job.JobName + ":" + Job.JobOwner + "\n")
 
     PrintJobTable(listDaysArray, listJobsTable) #產生EXCEL或是任何可以產生粗體的文件格式
+    SaveToDB(listDaysArray, conn)
 
     conn.close()
 
