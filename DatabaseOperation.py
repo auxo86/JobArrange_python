@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 import sqlite3
+import uuid
 
 #更新ForArrange(人員有新增，取消，或是折扣時)
 def UpdateForArrange(conn):
@@ -20,6 +21,17 @@ def DisableMember(MC, conn):
     conn.execute('update member_array set by_pass = 1 where ID = ' + str(MC[1]))
     conn.commit()
     return UpdateForArrange(conn)
+
+def SaveToDB(listDaysArray, conn):
+    #c = conn.cursor()
+    conn.execute('CREATE TABLE if not exists JobHistory (ID STRING PRIMARY KEY, date DATE, JobName STRING, OwnerName STRING);')
+    strStartDate = str(listDaysArray[0][0].JobDate.date())
+    StrEndDate = str(listDaysArray[len(listDaysArray)-1][0].JobDate.date())
+    conn.execute('delete from JobHistory where date >= ? and date <= ?', (strStartDate, StrEndDate))
+    for day in listDaysArray:
+        for job in day:
+            conn.execute('insert into JobHistory values (?,?,?,?)', (str(uuid.uuid4()), str(job.JobDate.date()), job.JobName, job.JobOwner))
+    conn.commit()
 
 def CheckIDorName(MC):
     if MC[1]:
