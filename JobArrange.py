@@ -1,17 +1,17 @@
 # -*- coding: utf8 -*-
 
 #使用本程式請注意設定以下條件：
-#1.誰下大夜
-#2.誰上大夜
-#3.是否有新人進入排班
-#4.是否有新人去ipd或是兒科training第一周
-#5.是否有人離職
-#6.是否有人出臨床
-#7.是否有人入臨床
-#8.是否有人外派
-#9.是否有人新包班
-#10.是否有人不包了
-#11.本月是否有休假日
+#1.誰下大夜 -> 表格member_array
+#2.誰上大夜 -> 表格member_array
+#3.是否有新人進入排班 -> 表格member_array
+#4.是否有新人去ipd或是兒科training第一周 -> 表格MemberChange
+#5.是否有人離職 -> 表格member_array
+#6.是否有人出臨床 -> 表格member_array
+#7.是否有人入臨床 -> 表格member_array
+#8.是否有人外派 -> 表格member_array
+#9.是否有人新包班 -> 表格job
+#10.是否有人不包了 -> 表格job
+#11.本月是否有休假日 -> 表格Holidays
 
 import sqlite3
 import datetime
