@@ -35,3 +35,6 @@ insert into ForArrange (name) select name from (select * from MemberWithoutByPas
 ---------------------------------------------------------------------
 產生MemberChange表
 CREATE TABLE if not exists MemberChange (date DATETIME NOT NULL, MemberId INTEGER NOT NULL, flagChange INTEGER NOT NULL, ArrangeOrder INTEGER);
+---------------------------------------------------------------------
+產生JobHistory表
+CREATE TABLE if not exists JobHistory (ID STRING PRIMARY KEY, date DATE, JobName STRING, OwnerName STRING);
