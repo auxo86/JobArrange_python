@@ -77,3 +77,11 @@ def GetBackStarterID(listNowAndNextMemberNamesAndPattern, listMemberForArrange):
         if item[0] == 1:
             intStartMemberId = item[1][0]
     return intStartMemberId
+
+def ReturnHolidays(c):
+    c.execute('select date from Holidays')
+    list_of_tuplesHolidays = c.fetchall()
+    listHolidays = []
+    for Holiday in list_of_tuplesHolidays:
+        listHolidays.append(Holiday[0])
+    return listHolidays

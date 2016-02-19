@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{475bf44e-9435-4c06-9077-77bab6146ea7}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>排班程式.py</StartupFile>
+    <StartupFile>JobArrange.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -33,7 +33,7 @@
     <Compile Include="DatabaseOperation.py" />
     <Compile Include="OutputModule.py" />
     <Compile Include="SourceReader.py" />
-    <Compile Include="排班程式.py" />
+    <Compile Include="JobArrange.py" />
     <Compile Include="排班程式雛形_shell_ver.py" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />

@@ -11,11 +11,12 @@
 #8.是否有人外派
 #9.是否有人新包班
 #10.是否有人不包了
+#11.本月是否有休假日
 
 import sqlite3
 import datetime
 from ClassInJobArrange import JobObj
-from SourceReader import CountJobQuantityInOneDay, ReturnJobsList, ReturnRegularMemberName, ReturnMemberChange, RecordNamesAndPattern, GetBackStarterID, GetBackStarterID, ShowForArrangeMemberTable
+from SourceReader import CountJobQuantityInOneDay, ReturnJobsList, ReturnRegularMemberName, ReturnMemberChange, RecordNamesAndPattern, GetBackStarterID, GetBackStarterID, ShowForArrangeMemberTable, ReturnHolidays
 from copy import deepcopy
 from OutputModule import PrintJobTable
 from DatabaseOperation import DoMemberDiscount, InsertMember, DisableMember, UpdateForArrange, DisableMemberDiscount
@@ -31,6 +32,7 @@ def main():
     #動態更動班後要重新算過
     listJobsTable = ReturnJobsList(c)
     listMemberForArrange = UpdateForArrange(conn)
+    listHolidays = ReturnHolidays(c)
     ShowForArrangeMemberTable(listMemberForArrange)
     #把動態更動排班人員的需求載入
     listMemberChange = ReturnMemberChange(conn)
@@ -74,7 +76,7 @@ def main():
                 listMemberForArrange = funcMC[MC[2]](MC, conn)
             #從記錄下的人名找出下一個要排的人，並且設定好intStartMemberId
             intStartMemberId = GetBackStarterID(listNowAndNextMemberNamesAndPattern,listMemberForArrange)
-        if dateStartDate.isoweekday() < 6:
+        if dateStartDate.isoweekday() < 6 and (str(dateStartDate.date()) not in listHolidays):
             iJobIndex = 0
             for Job in JobsInOneDay:
                 #填入日期
